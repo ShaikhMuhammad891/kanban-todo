@@ -11,9 +11,9 @@ export default {
       xxl: "1440px",
     },
 
-    colors: {
-      "primary-color": "#2b1887",
-    },
+    // colors: {
+    //   "primary-color": "#2b1887",
+    // },
     extend: {},
     fontFamily: {
       inter: ["Inter", "sans-serif"],
