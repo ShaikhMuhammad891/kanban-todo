@@ -8,11 +8,6 @@
 //   const [showModal, setShowModal] = useState(false);
 //   const [todos, setTodos] = useState([]);
 
-//   // set to localStorage
-//   useEffect(() => {
-//     localStorage.setItem("todos", JSON.stringify(todos));
-//   }, [todos]);
-
 //   // get from localStorage
 //   useEffect(() => {
 //     const storedTodos = localStorage.getItem("todos");
@@ -20,8 +15,21 @@
 //       setTodos(JSON.parse(storedTodos));
 //     }
 //   }, []);
+
+//   // set to localStorage
+//   useEffect(() => {
+//     if (todos.length > 0) {
+//       localStorage.setItem("todos", JSON.stringify(todos));
+//     }
+//   }, [todos]);
+
 //   const handleAddTodo = (todo) => {
 //     setTodos((prevTodos) => [...prevTodos, todo]);
+//   };
+
+//   const handleDeleteTodo = (index) => {
+//     const newTodos = todos.filter((_, i) => i !== index);
+//     setTodos(newTodos);
 //   };
 
 //   return (
@@ -40,12 +48,12 @@
 //           {todos.length === 0
 //             ? "No Todos here"
 //             : todos.map((todo, index) => (
-//                 <div key={index} className="mt-4 bg-white rounded-xl p-5">
-//                   <div className=" flex justify-between items-center">
-//                     <h3 className=" text-2xl font-bold text-black">
+//                 <div key={index} className="mt-4 bg-white rounded-xl p-5 cursor-auto cur" role="button">
+//                   <div className="flex justify-between items-center">
+//                     <h3 className="text-2xl font-bold text-black">
 //                       {todo.title}
 //                     </h3>
-//                     <button>
+//                     <button onClick={() => handleDeleteTodo(index)}>
 //                       <RiDeleteBin6Line
 //                         color="red"
 //                         className="w-[25px] h-[25px]"
@@ -53,10 +61,9 @@
 //                     </button>
 //                   </div>
 //                   <p>{todo.description}</p>
-
-//                   <div className=" flex justify-between items-center mt-4">
+//                   <div className="flex justify-between items-center mt-4">
 //                     <p className="text-sm text-gray-500">Due Date</p>
-//                     <p className=" text-2xl text-indigo-800">{index + 1}</p>
+//                     <p className="text-2xl text-indigo-800">{index + 1}</p>
 //                   </div>
 //                 </div>
 //               ))}
@@ -82,6 +89,8 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 const Todo = () => {
   const [showModal, setShowModal] = useState(false);
   const [todos, setTodos] = useState([]);
+  const [currentTodo, setCurrentTodo] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(null);
 
   // get from localStorage
   useEffect(() => {
@@ -98,13 +107,25 @@ const Todo = () => {
     }
   }, [todos]);
 
-  const handleAddTodo = (todo) => {
-    setTodos((prevTodos) => [...prevTodos, todo]);
+  const handleAddTodo = (todo, index) => {
+    if (index !== null) {
+      setTodos((prevTodos) =>
+        prevTodos.map((t, i) => (i === index ? todo : t))
+      );
+    } else {
+      setTodos((prevTodos) => [...prevTodos, todo]);
+    }
   };
 
   const handleDeleteTodo = (index) => {
     const newTodos = todos.filter((_, i) => i !== index);
     setTodos(newTodos);
+  };
+
+  const handleEditTodo = (todo, index) => {
+    setCurrentTodo(todo);
+    setCurrentIndex(index);
+    setShowModal(true);
   };
 
   return (
@@ -116,19 +137,36 @@ const Todo = () => {
             <p className="text-indigo-800 text-3xl font-bold">To-Do</p>
           </div>
           <div>
-            <Button onClick={() => setShowModal(true)} />
+            <Button
+              onClick={() => {
+                setShowModal(true);
+                setCurrentTodo(null);
+                setCurrentIndex(null);
+              }}
+            />
           </div>
         </div>
         <div className="">
           {todos.length === 0
             ? "No Todos here"
             : todos.map((todo, index) => (
-                <div key={index} className="mt-4 bg-white rounded-xl p-5">
+                <div
+                  key={index}
+                  className="mt-4 bg-white rounded-xl p-5 cursor-grab"
+                  draggable
+                  role="button"
+                  onClick={() => handleEditTodo(todo, index)}
+                >
                   <div className="flex justify-between items-center">
                     <h3 className="text-2xl font-bold text-black">
                       {todo.title}
                     </h3>
-                    <button onClick={() => handleDeleteTodo(index)}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteTodo(index);
+                      }}
+                    >
                       <RiDeleteBin6Line
                         color="red"
                         className="w-[25px] h-[25px]"
@@ -137,7 +175,7 @@ const Todo = () => {
                   </div>
                   <p>{todo.description}</p>
                   <div className="flex justify-between items-center mt-4">
-                    <p className="text-sm text-gray-500">Due Date</p>
+                    <p className="text-sm text-gray-500">Date</p>
                     <p className="text-2xl text-indigo-800">{index + 1}</p>
                   </div>
                 </div>
@@ -146,8 +184,14 @@ const Todo = () => {
       </div>
       <Modal
         show={showModal}
-        onClose={() => setShowModal(false)}
+        onClose={() => {
+          setShowModal(false);
+          setCurrentTodo(null);
+          setCurrentIndex(null);
+        }}
         onSubmit={handleAddTodo}
+        todo={currentTodo}
+        index={currentIndex}
       />
     </>
   );
