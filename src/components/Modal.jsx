@@ -46,7 +46,13 @@ const Modal = ({ show, onClose, onSubmit, todo, index }) => {
 
   return (
     <>
-      <div style={OVERLAY_STYLES} onClick={onClose} />
+      <div
+        style={OVERLAY_STYLES}
+        onClick={() => {
+          onClose();
+          setData("");
+        }}
+      />
       <div className="max-w-[600px] py-8 px-5 rounded-xl w-full bg-white fixed mt-14 z-[1000]">
         <h2 className="text-center text-3xl font-semibold text-indigo-900">
           {index !== null ? "Edit Todo" : "Add Todo"}
@@ -58,14 +64,14 @@ const Modal = ({ show, onClose, onSubmit, todo, index }) => {
             value={data.title}
             onChange={handleChange}
             className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
-            placeholder="Apply For Fullstack Job"
+            placeholder="Todo Title"
           />
           <textarea
             required
             id="description"
             value={data.description}
             onChange={handleChange}
-            placeholder="Write a proposal for job application"
+            placeholder="Todo Description"
             className="mb-5 mt-2 text-gray-600 focus:outline-none py-2 min-h-[200px] focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
           />
           <button
