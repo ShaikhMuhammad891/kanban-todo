@@ -3,12 +3,23 @@ import { IoClipboardOutline } from "react-icons/io5";
 import Button from "../components/Button";
 import Modal from "../components/Modal";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { useDrag } from "react-dnd";
+import itemTypes from "../../utils/itemTypes";
 
 const Todo = () => {
   const [showModal, setShowModal] = useState(false);
   const [todos, setTodos] = useState([]);
   const [currentTodo, setCurrentTodo] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(null);
+
+  const [{ isDragging }, drag] = useDrag({
+    item: {
+      type: itemTypes.CARD,
+    },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  });
 
   // get from localStorage
   useEffect(() => {
@@ -69,8 +80,8 @@ const Todo = () => {
             ? "No Todos here"
             : todos.map((todo, index) => (
                 <div
-                  draggable
                   key={index}
+                  ref={drag}
                   className="mt-4 bg-white rounded-xl p-5 cursor-grab"
                   onClick={() => handleEditTodo(todo, index)}
                 >
