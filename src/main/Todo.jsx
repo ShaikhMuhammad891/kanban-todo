@@ -153,7 +153,6 @@ const Todo = () => {
                 <div
                   key={index}
                   className="mt-4 bg-white rounded-xl p-5 cursor-grab"
-                  draggable
                   role="button"
                   onClick={() => handleEditTodo(todo, index)}
                 >
