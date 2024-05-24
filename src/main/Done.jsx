@@ -1,6 +1,7 @@
 import React from "react";
 import { HiDocumentCheck } from "react-icons/hi2";
 import { useDroppable } from "@dnd-kit/core";
+import DroppableTodo from "./DroppableTodo";
 
 const Done = () => {
   const { setNodeRef } = useDroppable({
@@ -14,7 +15,9 @@ const Done = () => {
 
           <div className=" text-indigo-800 text-3xl font-bold">Done</div>
         </div>
-        <div className=" w-full h-[80vh] bg-green-400" ref={setNodeRef}></div>
+        
+        {/* droppable area */}
+        <DroppableTodo />
       </div>
     </>
   );
