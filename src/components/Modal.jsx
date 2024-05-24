@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import DraggableItem from "../main/DraggableItem";
 
 const OVERLAY_STYLES = {
   position: "fixed",
