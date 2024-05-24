@@ -10,8 +10,8 @@ const MainPage = () => {
           Todo Kanban
         </p>
         <div className=" mt-12 grid grid-cols-2 gap-5 w-full  justify-items-center">
-            <Todo />
-            <Done />
+          <Todo />
+          <Done />
         </div>
       </div>
     </>
