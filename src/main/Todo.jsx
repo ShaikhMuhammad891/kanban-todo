@@ -4,6 +4,7 @@ import Button from "../components/Button";
 import Modal from "../components/Modal";
 import DraggableItem from "./DraggableItem";
 import { v4 as uuidv4 } from "uuid";
+import { useDndMonitor } from "@dnd-kit/core";
 
 const Todo = () => {
   const [showModal, setShowModal] = useState(false);
@@ -11,6 +12,14 @@ const Todo = () => {
   const [currentTodo, setCurrentTodo] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(null);
 
+  useDndMonitor({
+    onDragStart: (event) => {
+      setCurrentIndex(event.active.id);
+    },
+    onDragOver: (event) => {
+      console.log("Dragging over  ");
+    },
+  });
   // get from localStorage
   useEffect(() => {
     const storedTodos = localStorage.getItem("todos");

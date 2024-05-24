@@ -1,9 +1,10 @@
 import React from "react";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
-const DroppableTodo = () => {
+const DroppableTodo = ({ todo, index, handleEditTodo, handleDeleteTodo }) => {
   return (
     <>
-      <div>DROP HERE</div>
+      <div></div>
     </>
   );
 };

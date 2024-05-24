@@ -1,9 +1,6 @@
 import React from "react";
 import Todo from "./Todo";
 import Done from "./Done";
-import { DndContext, closestCenter } from "@dnd-kit/core";
-import { arrayMove, SortableContext, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 
 const MainPage = () => {
   return (
