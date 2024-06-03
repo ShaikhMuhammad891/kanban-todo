@@ -1,25 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
 const DraggableItem = ({ todo, index, handleDeleteTodo, handleEditTodo }) => {
-  const [dragging, setDragging] = useState(false);
-  const { attributes, listeners, setNodeRef, transform, isDragging } =
-    useDraggable({
-      id: todo.id,
-    });
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: todo.id,
+  });
 
   const style = {
     transform: CSS.Translate.toString(transform),
   };
 
-  const conditionalProps = isDragging ? { ...listeners, ...attributes } : {};
-
   return (
     <div
       ref={setNodeRef}
-      {...conditionalProps}
+      {...listeners}
+      {...attributes}
       style={style}
       className="mt-4 bg-white rounded-xl p-5 cursor-grab z-[1000]"
       onClick={() => handleEditTodo(todo, index)}
