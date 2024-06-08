@@ -1,34 +1,47 @@
-import React, { useState } from "react";
+import React from "react";
 import { HiDocumentCheck } from "react-icons/hi2";
-import { DndContext, useDroppable } from "@dnd-kit/core";
 import DraggableItem from "./DraggableItem";
-import { arrayMove } from "@dnd-kit/sortable";
+import { Droppable } from "react-beautiful-dnd";
 
-const Done = () => {
-  const [droppedItems, setDroppedItems] = useState([]);
-
-  const handleDrop = (event) => {
-    const { over, active } = event;
-
-    if (over) {
-      setDroppedItems((items) => {
-        const newIndex = over.index;
-        const movedItems = arrayMove(items, active.id, newIndex);
-        return movedItems;
-      });
-    }
-  };
-
+const Done = ({
+  done,
+  handleAddTodo,
+  handleDeleteTodo,
+  handleEditTodo,
+  setShowModal,
+  setCurrentTodo,
+  setCurrentIndex,
+  setCurrentStatus,
+}) => {
   return (
-    <DndContext onDragEnd={handleDrop}>
-      <div className="max-w-[560px] w-full bg-[#d5ccff] pb-4 pt-3 px-3 rounded-xl self-start">
-        <div className="flex gap-5">
+    <div className="max-w-[560px] w-full bg-[#d5ccff] pb-8 pt-6 px-6 rounded-xl self-start">
+      <div className="flex justify-between">
+        <div className="flex gap-4">
           <HiDocumentCheck className="text-indigo-800 w-[40px] h-[40px]" />
-          <div className="text-indigo-800 text-3xl font-bold">Done</div>
+          <p className="text-indigo-800 text-3xl font-bold">Done</p>
         </div>
-        <DroppableTodo droppedItems={droppedItems} />
       </div>
-    </DndContext>
+
+      <Droppable droppableId="doneList">
+        {(provided) => (
+          <div {...provided.droppableProps} ref={provided.innerRef}>
+            {done.length === 0
+              ? "No Done items here"
+              : done.map((todo, index) => (
+                  <DraggableItem
+                    key={todo.id}
+                    todo={todo}
+                    index={index}
+                    handleEditTodo={handleEditTodo}
+                    handleDeleteTodo={handleDeleteTodo}
+                    status="done"
+                  />
+                ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </div>
   );
 };
 

@@ -2,6 +2,7 @@ import React from "react";
 import { IoClipboardOutline } from "react-icons/io5";
 import Button from "../components/Button";
 import DraggableItem from "./DraggableItem";
+import { Droppable } from "react-beautiful-dnd";
 
 const Todo = ({
   todos,
@@ -11,6 +12,7 @@ const Todo = ({
   setShowModal,
   setCurrentTodo,
   setCurrentIndex,
+  setCurrentStatus,
 }) => {
   return (
     <div className="max-w-[560px] w-full bg-[#d5ccff] pb-8 pt-6 px-6 rounded-xl self-start">
@@ -25,24 +27,31 @@ const Todo = ({
               setShowModal(true);
               setCurrentTodo(null);
               setCurrentIndex(null);
+              setCurrentStatus("todo");
             }}
           />
         </div>
       </div>
 
-      <div>
-        {todos.length === 0
-          ? "No Todos here"
-          : todos.map((todo, index) => (
-              <DraggableItem
-                key={todo.id}
-                todo={todo}
-                index={index}
-                handleEditTodo={handleEditTodo}
-                handleDeleteTodo={handleDeleteTodo}
-              />
-            ))}
-      </div>
+      <Droppable droppableId="todoList">
+        {(provided) => (
+          <div {...provided.droppableProps} ref={provided.innerRef}>
+            {todos.length === 0
+              ? "No Todos here"
+              : todos.map((todo, index) => (
+                  <DraggableItem
+                    key={todo.id}
+                    todo={todo}
+                    index={index}
+                    handleEditTodo={handleEditTodo}
+                    handleDeleteTodo={handleDeleteTodo}
+                    status="todo"
+                  />
+                ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
     </div>
   );
 };
