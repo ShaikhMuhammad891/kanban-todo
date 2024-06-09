@@ -30,7 +30,7 @@ const DraggableItem = ({
               <RiDeleteBin6Line color="red" className="w-[25px] h-[25px]" />
             </button>
           </div>
-          <p>{todo.description}</p>
+          <p className=" mt-4 text-start font-normal text-[16px] tracking-wide">{todo.description}</p>
           <div className="flex justify-between items-center mt-4">
             <p className="text-sm text-gray-500">Due Date</p>
             <p className="text-2xl text-indigo-800">{index + 1}</p>

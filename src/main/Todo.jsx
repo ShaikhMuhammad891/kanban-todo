@@ -35,7 +35,11 @@ const Todo = ({
 
       <Droppable droppableId="todoList">
         {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
+          <div
+            className=" text-center font-semibold text-2xl"
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
             {todos.length === 0
               ? "No Todos here"
               : todos.map((todo, index) => (

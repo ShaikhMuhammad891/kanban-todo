@@ -24,7 +24,7 @@ const Done = ({
 
       <Droppable droppableId="doneList">
         {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
+          <div className=" text-center text-2xl font-semibold" {...provided.droppableProps} ref={provided.innerRef}>
             {done.length === 0
               ? "No Done items here"
               : done.map((todo, index) => (

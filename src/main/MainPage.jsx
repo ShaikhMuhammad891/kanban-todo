@@ -4,6 +4,8 @@ import Done from "./Done";
 import Modal from "../components/Modal";
 import { v4 as uuidv4 } from "uuid";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MainPage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -37,16 +39,18 @@ const MainPage = () => {
         setTodos((prevTodos) =>
           prevTodos.map((t, i) => (i === index ? todo : t))
         );
+        toast.success("To-do updated successfully!");
       } else {
         setTodos((prevTodos) => [...prevTodos, { ...todo, id: uuidv4() }]);
+        toast.success("To-do added successfully!");
       }
     } else if (currentStatus === "done") {
       if (index !== null) {
-        setDone((prevDone) =>
-          prevDone.map((t, i) => (i === index ? todo : t))
-        );
+        setDone((prevDone) => prevDone.map((t, i) => (i === index ? todo : t)));
+        toast.success("Done item updated successfully!");
       } else {
         setDone((prevDone) => [...prevDone, { ...todo, id: uuidv4() }]);
+        toast.success("Done item added successfully!");
       }
     }
   };
@@ -55,9 +59,11 @@ const MainPage = () => {
     if (status === "todo") {
       const newTodos = todos.filter((_, i) => i !== index);
       setTodos(newTodos);
+      toast.error("To-do deleted successfully!");
     } else if (status === "done") {
       const newDone = done.filter((_, i) => i !== index);
       setDone(newDone);
+      toast.error("Done item deleted successfully!");
     }
   };
 
@@ -86,20 +92,28 @@ const MainPage = () => {
         setDone(reorderedDone);
       }
     } else {
-      if (source.droppableId === "todoList" && destination.droppableId === "doneList") {
+      if (
+        source.droppableId === "todoList" &&
+        destination.droppableId === "doneList"
+      ) {
         const updatedTodos = Array.from(todos);
         const [movedTodo] = updatedTodos.splice(source.index, 1);
         const updatedDone = Array.from(done);
         updatedDone.splice(destination.index, 0, movedTodo);
         setTodos(updatedTodos);
         setDone(updatedDone);
-      } else if (source.droppableId === "doneList" && destination.droppableId === "todoList") {
+        toast.success("Todo moved to completed");
+      } else if (
+        source.droppableId === "doneList" &&
+        destination.droppableId === "todoList"
+      ) {
         const updatedDone = Array.from(done);
         const [movedDone] = updatedDone.splice(source.index, 1);
         const updatedTodos = Array.from(todos);
         updatedTodos.splice(destination.index, 0, movedDone);
         setDone(updatedDone);
         setTodos(updatedTodos);
+        toast.success("Todo moved to pending");
       }
     }
   };
@@ -150,6 +164,7 @@ const MainPage = () => {
           index={currentIndex}
         />
       </div>
+      <ToastContainer />
     </>
   );
 };
