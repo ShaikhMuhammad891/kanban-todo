@@ -30,9 +30,33 @@ const DraggableItem = ({
               <RiDeleteBin6Line color="red" className="w-[25px] h-[25px]" />
             </button>
           </div>
-          <p className=" mt-4 text-start font-normal text-[16px] tracking-wide">{todo.description}</p>
+          <p className=" mt-4 text-start font-normal text-[16px] tracking-wide">
+            {todo.description}
+          </p>
           <div className="flex justify-between items-center mt-4">
-            <p className="text-sm text-gray-500">Due Date</p>
+            <div
+              className={`${
+                status === "todo" ? "" : "text-blue-500"
+              } flex gap-3 items-center`}
+            >
+              <p className="py-1 px-2 bg-[#ECB800]  text-[16px] rounded-md font-inter text-white tracking-wide">
+                Fri
+              </p>
+              <p
+                className={`${
+                  status === "todo"
+                    ? "bg-[#ECB800]   rounded-bl-full h-[13px] w-[23px]"
+                    : "bg-indigo-700 rounded-bl-full h-[13px] w-[23px]"
+                }`}
+              ></p>
+              <p
+                className={`${
+                  status === "todo"
+                    ? "bg-gray-300 rounded-bl-full h-[13px] w-[23px]"
+                    : "bg-indigo-700 rounded-bl-full h-[13px] w-[23px]"
+                }`}
+              ></p>
+            </div>
             <p className="text-2xl text-indigo-800">{index + 1}</p>
           </div>
         </div>
