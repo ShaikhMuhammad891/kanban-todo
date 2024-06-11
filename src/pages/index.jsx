@@ -11,8 +11,8 @@ const MainPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [todos, setTodos] = useState([]);
   const [done, setDone] = useState([]);
-  const [currentTodo, setCurrentTodo] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(null);
+  const [editTodo, setEditTodo] = useState(null);
+  const [editIndex, setEditIndex] = useState(null);
   const [currentStatus, setCurrentStatus] = useState(null);
 
   // Get from localStorage
@@ -20,10 +20,10 @@ const MainPage = () => {
     const storedTodos = localStorage.getItem("todos");
     const storedDone = localStorage.getItem("done");
     if (storedTodos) {
-      setTodos(JSON.parse(storedTodos));
+      setTodos(JSON.parse(storedTodos || []));
     }
     if (storedDone) {
-      setDone(JSON.parse(storedDone));
+      setDone(JSON.parse(storedDone || []));
     }
   }, []);
 
@@ -33,23 +33,25 @@ const MainPage = () => {
     localStorage.setItem("done", JSON.stringify(done));
   }, [todos, done]);
 
-  const handleAddTodo = (todo, index) => {
+  const handleAddTodo = (editTodo, editIndex) => {
     if (currentStatus === "todo") {
-      if (index !== null) {
+      if (editIndex !== null) {
         setTodos((prevTodos) =>
-          prevTodos.map((t, i) => (i === index ? todo : t))
+          prevTodos.map((t, i) => (i === editIndex ? editTodo : t))
         );
         toast.success("To-do updated successfully!");
       } else {
-        setTodos((prevTodos) => [...prevTodos, { ...todo, id: uuidv4() }]);
+        setTodos((prevTodos) => [...prevTodos, { ...editTodo, id: uuidv4() }]);
         toast.success("To-do added successfully!");
       }
     } else if (currentStatus === "done") {
-      if (index !== null) {
-        setDone((prevDone) => prevDone.map((t, i) => (i === index ? todo : t)));
+      if (editIndex !== null) {
+        setDone((prevDone) =>
+          prevDone.map((t, i) => (i === editIndex ? editTodo : t))
+        );
         toast.success("Done item updated successfully!");
       } else {
-        setDone((prevDone) => [...prevDone, { ...todo, id: uuidv4() }]);
+        setDone((prevDone) => [...prevDone, { ...editTodo, id: uuidv4() }]);
         toast.success("Done item added successfully!");
       }
     }
@@ -68,8 +70,8 @@ const MainPage = () => {
   };
 
   const handleEditTodo = (todo, index, status) => {
-    setCurrentTodo(todo);
-    setCurrentIndex(index);
+    setEditTodo(todo);
+    setEditIndex(index);
     setCurrentStatus(status);
     setShowModal(true);
   };
@@ -132,19 +134,14 @@ const MainPage = () => {
               handleDeleteTodo={handleDeleteTodo}
               handleEditTodo={handleEditTodo}
               setShowModal={setShowModal}
-              setCurrentTodo={setCurrentTodo}
-              setCurrentIndex={setCurrentIndex}
+              setEditTodo={setEditTodo}
+              setEditIndex={setEditIndex}
               setCurrentStatus={setCurrentStatus}
             />
             <Done
               done={done}
-              handleAddTodo={handleAddTodo}
               handleDeleteTodo={handleDeleteTodo}
               handleEditTodo={handleEditTodo}
-              setShowModal={setShowModal}
-              setCurrentTodo={setCurrentTodo}
-              setCurrentIndex={setCurrentIndex}
-              setCurrentStatus={setCurrentStatus}
             />
           </div>
         </DragDropContext>
@@ -155,13 +152,13 @@ const MainPage = () => {
           show={showModal}
           onClose={() => {
             setShowModal(false);
-            setCurrentTodo(null);
-            setCurrentIndex(null);
+            setEditTodo(null);
+            setEditIndex(null);
             setCurrentStatus(null);
           }}
           onSubmit={handleAddTodo}
-          todo={currentTodo}
-          index={currentIndex}
+          editTodo={editTodo}
+          EditIndex={editIndex}
         />
       </div>
       <ToastContainer />

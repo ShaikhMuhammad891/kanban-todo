@@ -3,16 +3,7 @@ import { HiDocumentCheck } from "react-icons/hi2";
 import DraggableItem from "./DraggableItem";
 import { Droppable } from "react-beautiful-dnd";
 
-const Done = ({
-  done,
-  handleAddTodo,
-  handleDeleteTodo,
-  handleEditTodo,
-  setShowModal,
-  setCurrentTodo,
-  setCurrentIndex,
-  setCurrentStatus,
-}) => {
+const Done = ({ done, handleDeleteTodo, handleEditTodo }) => {
   return (
     <div className="max-w-[560px] w-full bg-[#d5ccff] pb-8 pt-6 px-6 rounded-xl self-start">
       <div className="flex justify-between">
@@ -24,7 +15,11 @@ const Done = ({
 
       <Droppable droppableId="doneList">
         {(provided) => (
-          <div className=" text-center text-2xl font-semibold" {...provided.droppableProps} ref={provided.innerRef}>
+          <div
+            className=" text-center text-2xl font-semibold"
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
             {done.length === 0
               ? "No Done items here"
               : done.map((todo, index) => (

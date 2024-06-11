@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-const Modal = ({ show, onClose, onSubmit, todo, index }) => {
+const Modal = ({ show, onClose, onSubmit, editTodo, editIndex }) => {
   const [data, setData] = useState({
     title: "",
     description: "",
   });
 
   useEffect(() => {
-    if (todo) {
-      setData(todo);
+    if (editTodo) {
+      setData(editTodo);
     }
-  }, [todo]);
+  }, [editTodo]);
 
   if (!show) {
     return null;
@@ -26,7 +26,7 @@ const Modal = ({ show, onClose, onSubmit, todo, index }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(data, index);
+    onSubmit(data, editIndex);
     setData({
       title: "",
       description: "",
@@ -45,7 +45,7 @@ const Modal = ({ show, onClose, onSubmit, todo, index }) => {
       />
       <div className="max-w-[600px] py-8 px-5 rounded-xl w-full bg-white fixed mt-14 z-[1000]">
         <h2 className="text-center text-3xl font-semibold text-indigo-900">
-          {index !== null ? "Edit Todo" : "Add Todo"}
+          {editIndex !== null ? "Edit Todo" : "Add Todo"}
         </h2>
         <form onSubmit={handleSubmit}>
           <input

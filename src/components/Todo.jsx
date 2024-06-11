@@ -6,11 +6,10 @@ import { Droppable } from "react-beautiful-dnd";
 
 const Todo = ({
   todos,
-  handleAddTodo,
   handleDeleteTodo,
   handleEditTodo,
   setShowModal,
-  setCurrentTodo,
+  setEditTodo,
   setCurrentIndex,
   setCurrentStatus,
 }) => {
@@ -25,7 +24,7 @@ const Todo = ({
           <Button
             onClick={() => {
               setShowModal(true);
-              setCurrentTodo(null);
+              setEditTodo(null);
               setCurrentIndex(null);
               setCurrentStatus("todo");
             }}
