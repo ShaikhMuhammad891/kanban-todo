@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Todo from "./Todo";
-import Done from "./Done";
+import Done from "../components/Done";
+import Todo from "../components/Todo";
 import Modal from "../components/Modal";
 import { v4 as uuidv4 } from "uuid";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";

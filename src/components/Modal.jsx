@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-const OVERLAY_STYLES = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  backgroundColor: "rgba(0, 0, 0, 0.5)",
-  zIndex: 1000,
-};
-
 const Modal = ({ show, onClose, onSubmit, todo, index }) => {
   const [data, setData] = useState({
     title: "",
@@ -47,7 +37,7 @@ const Modal = ({ show, onClose, onSubmit, todo, index }) => {
   return (
     <>
       <div
-        style={OVERLAY_STYLES}
+        className=" fixed top-0 left-0 right-0 bottom-0 w-screen h-screen z-[1000] bg-[#00000080]"
         onClick={() => {
           onClose();
           setData("");

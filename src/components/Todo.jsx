@@ -1,7 +1,7 @@
 import React from "react";
 import { IoClipboardOutline } from "react-icons/io5";
 import Button from "../components/Button";
-import DraggableItem from "./DraggableItem";
+import DraggableItem from "../components/DraggableItem";
 import { Droppable } from "react-beautiful-dnd";
 
 const Todo = ({
