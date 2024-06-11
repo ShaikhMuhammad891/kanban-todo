@@ -3,7 +3,7 @@ import Done from "../components/Done";
 import Todo from "../components/Todo";
 import Modal from "../components/Modal";
 import { v4 as uuidv4 } from "uuid";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext } from "react-beautiful-dnd";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -20,10 +20,10 @@ const MainPage = () => {
     const storedTodos = localStorage.getItem("todos");
     const storedDone = localStorage.getItem("done");
     if (storedTodos) {
-      setTodos(JSON.parse(storedTodos || []));
+      setTodos(JSON.parse(storedTodos));
     }
     if (storedDone) {
-      setDone(JSON.parse(storedDone || []));
+      setDone(JSON.parse(storedDone));
     }
   }, []);
 
@@ -158,7 +158,7 @@ const MainPage = () => {
           }}
           onSubmit={handleAddTodo}
           editTodo={editTodo}
-          EditIndex={editIndex}
+          editIndex={editIndex}
         />
       </div>
       <ToastContainer />

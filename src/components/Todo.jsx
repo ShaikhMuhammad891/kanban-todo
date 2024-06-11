@@ -10,7 +10,7 @@ const Todo = ({
   handleEditTodo,
   setShowModal,
   setEditTodo,
-  setCurrentIndex,
+  setEditIndex,
   setCurrentStatus,
 }) => {
   return (
@@ -25,7 +25,7 @@ const Todo = ({
             onClick={() => {
               setShowModal(true);
               setEditTodo(null);
-              setCurrentIndex(null);
+              setEditIndex(null);
               setCurrentStatus("todo");
             }}
           />
