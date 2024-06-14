@@ -11,7 +11,7 @@ const Todo = ({
   setShowModal,
   setEditTodo,
   setEditIndex,
-  setCurrentStatus,
+  setStatus,
 }) => {
   return (
     <div className="max-w-[560px] w-full bg-[#d5ccff] pb-8 pt-6 px-6 rounded-xl self-start">
@@ -26,7 +26,7 @@ const Todo = ({
               setShowModal(true);
               setEditTodo(null);
               setEditIndex(null);
-              setCurrentStatus("todo");
+              setStatus("todo");
             }}
           />
         </div>

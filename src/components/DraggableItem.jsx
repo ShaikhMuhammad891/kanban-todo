@@ -14,7 +14,7 @@ const DraggableItem = ({
       {(provided) => (
         <div
           className="mt-4 bg-white rounded-xl p-5 cursor-grab z-[1000]"
-          onClick={() => handleEditTodo(todo, index, status)}
+          onClick={() => handleEditTodo(todo.id, status)}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -24,7 +24,7 @@ const DraggableItem = ({
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                handleDeleteTodo(index, status);
+                handleDeleteTodo(todo.id, status);
               }}
             >
               <RiDeleteBin6Line color="red" className="w-[25px] h-[25px]" />

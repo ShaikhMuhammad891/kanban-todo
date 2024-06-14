@@ -13,7 +13,7 @@ const MainPage = () => {
   const [done, setDone] = useState([]);
   const [editTodo, setEditTodo] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
-  const [currentStatus, setCurrentStatus] = useState(null);
+  const [status, setStatus] = useState(null);
 
   // Get from localStorage
   useEffect(() => {
@@ -33,47 +33,71 @@ const MainPage = () => {
     localStorage.setItem("done", JSON.stringify(done));
   }, [todos, done]);
 
-  const handleAddTodo = (editTodo, editIndex) => {
-    if (currentStatus === "todo") {
+  const handleAddAndUpdateTodo = (todo, editIndex) => {
+    if (status === "todo") {
+      //update inside todo
       if (editIndex !== null) {
-        setTodos((prevTodos) =>
-          prevTodos.map((t, i) => (i === editIndex ? editTodo : t))
-        );
+        const updatedTodo = [...todos];
+        updatedTodo[editIndex] = todo;
+        setTodos(updatedTodo);
         toast.success("To-do updated successfully!");
-      } else {
-        setTodos((prevTodos) => [...prevTodos, { ...editTodo, id: uuidv4() }]);
+      }
+
+      //add inside todo
+      else {
+        setTodos((prev) => [...prev, { ...todo, id: uuidv4() }]);
         toast.success("To-do added successfully!");
       }
-    } else if (currentStatus === "done") {
+    } else if (status === "done") {
+      //update inside done
       if (editIndex !== null) {
-        setDone((prevDone) =>
-          prevDone.map((t, i) => (i === editIndex ? editTodo : t))
-        );
+        const updatedDone = [...done];
+        updatedDone[editIndex] = todo;
+        setDone(updatedDone);
         toast.success("Done item updated successfully!");
-      } else {
-        setDone((prevDone) => [...prevDone, { ...editTodo, id: uuidv4() }]);
+      }
+
+      // add inside done
+      else {
+        setDone((prev) => [...prev, { ...editTodo, id: uuidv4() }]);
         toast.success("Done item added successfully!");
       }
     }
   };
 
-  const handleDeleteTodo = (index, status) => {
+  const handleDeleteTodo = (todoId, status) => {
     if (status === "todo") {
-      const newTodos = todos.filter((_, i) => i !== index);
+      const newTodos = todos.filter((todo) => todo.id !== todoId);
       setTodos(newTodos);
       toast.error("To-do deleted successfully!");
     } else if (status === "done") {
-      const newDone = done.filter((_, i) => i !== index);
+      const newDone = done.filter((done) => done.id !== todoId);
       setDone(newDone);
       toast.error("Done item deleted successfully!");
     }
   };
 
-  const handleEditTodo = (todo, index, status) => {
-    setEditTodo(todo);
-    setEditIndex(index);
-    setCurrentStatus(status);
-    setShowModal(true);
+  const handleEditTodo = (todoId, status) => {
+    if (status === "todo") {
+      const findValue = todos.find((el) => el.id === todoId);
+      const findIndex = todos.indexOf(findValue);
+      setEditTodo(findValue);
+      setEditIndex(findIndex);
+      setStatus(status);
+      setShowModal(true);
+    } else if (status === "done") {
+      const findValue = done.find((el) => el.id === todoId);
+      const findIndex = done.indexOf(findValue);
+      setEditTodo(findValue);
+      setEditIndex(findIndex);
+      setStatus(status);
+      setShowModal(true);
+    }
+
+    // setEditTodo(todo);
+    // setEditIndex(index);
+    // setStatus(status);
+    // setShowModal(true);
   };
 
   const onDragEnd = (result) => {
@@ -82,36 +106,45 @@ const MainPage = () => {
     if (!destination) return;
 
     if (source.droppableId === destination.droppableId) {
+      // dragging isnide todo
       if (source.droppableId === "todoList") {
-        const reorderedTodos = Array.from(todos);
+        const reorderedTodos = [...todos];
         const [movedTodo] = reorderedTodos.splice(source.index, 1);
         reorderedTodos.splice(destination.index, 0, movedTodo);
         setTodos(reorderedTodos);
+
+        // dragging inside completed task
       } else if (source.droppableId === "doneList") {
-        const reorderedDone = Array.from(done);
+        const reorderedDone = [...done];
         const [movedDone] = reorderedDone.splice(source.index, 1);
         reorderedDone.splice(destination.index, 0, movedDone);
         setDone(reorderedDone);
       }
-    } else {
+    }
+    //dragging between todo and completed
+    else {
+      //dragging from todo to completed
       if (
         source.droppableId === "todoList" &&
         destination.droppableId === "doneList"
       ) {
-        const updatedTodos = Array.from(todos);
+        const updatedTodos = [...todos];
         const [movedTodo] = updatedTodos.splice(source.index, 1);
-        const updatedDone = Array.from(done);
+        const updatedDone = [...done];
         updatedDone.splice(destination.index, 0, movedTodo);
         setTodos(updatedTodos);
         setDone(updatedDone);
         toast.success("Todo moved to completed");
-      } else if (
+      }
+
+      //dragging from completed to done
+      else if (
         source.droppableId === "doneList" &&
         destination.droppableId === "todoList"
       ) {
-        const updatedDone = Array.from(done);
+        const updatedDone = [...done];
         const [movedDone] = updatedDone.splice(source.index, 1);
-        const updatedTodos = Array.from(todos);
+        const updatedTodos = [...todos];
         updatedTodos.splice(destination.index, 0, movedDone);
         setDone(updatedDone);
         setTodos(updatedTodos);
@@ -130,13 +163,13 @@ const MainPage = () => {
           <div className="mt-12 grid grid-cols-2 gap-5 w-full justify-items-center">
             <Todo
               todos={todos}
-              handleAddTodo={handleAddTodo}
+              handleAddTodo={handleAddAndUpdateTodo}
               handleDeleteTodo={handleDeleteTodo}
               handleEditTodo={handleEditTodo}
               setShowModal={setShowModal}
               setEditTodo={setEditTodo}
               setEditIndex={setEditIndex}
-              setCurrentStatus={setCurrentStatus}
+              setStatus={setStatus}
             />
             <Done
               done={done}
@@ -154,9 +187,9 @@ const MainPage = () => {
             setShowModal(false);
             setEditTodo(null);
             setEditIndex(null);
-            setCurrentStatus(null);
+            setStatus(null);
           }}
-          onSubmit={handleAddTodo}
+          onSubmit={handleAddAndUpdateTodo}
           editTodo={editTodo}
           editIndex={editIndex}
         />
